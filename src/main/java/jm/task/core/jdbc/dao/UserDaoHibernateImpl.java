@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-    private final SessionFactory sessionFactory = (SessionFactory) Util.createConnection();
+    private final SessionFactory sessionFactory = (SessionFactory) Util.getConnection();
 
 
     public UserDaoHibernateImpl() {

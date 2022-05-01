@@ -12,7 +12,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    Connection connection = Util.createConnection();
+    Connection connection = (Connection) Util.getConnection();
 
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
