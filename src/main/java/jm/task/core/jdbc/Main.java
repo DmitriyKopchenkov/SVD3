@@ -15,9 +15,9 @@ public class Main {
         userService.createUsersTable();
 
         userService.saveUser("Roman","Longer",(byte) 25);
-        userService.saveUser("Podzalupny","Cottagecheese",(byte) 30);
-        userService.saveUser("Cheap","Whore",(byte) 55);
-        userService.saveUser("Darima", "Soplezhuyka",(byte) 14);
+        userService.saveUser("Ivan","Phedorov",(byte) 30);
+        userService.saveUser("Viktor","Philippov",(byte) 55);
+        userService.saveUser("Dmitriy", "Kopchenkov",(byte) 14);
 
         System.out.println(userService.getAllUsers().toString());
 
