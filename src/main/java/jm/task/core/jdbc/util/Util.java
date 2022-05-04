@@ -6,6 +6,8 @@ package jm.task.core.jdbc.util;
         import org.hibernate.cfg.Configuration;
         import org.hibernate.service.ServiceRegistry;
 
+        import java.sql.Connection;
+
 public class Util {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static String url = "jdbc:mysql://localhost:3306/MySql?useSSL=false&serverTimezone=UTC";
@@ -13,7 +15,7 @@ public class Util {
     private static String password = "root";
     private static SessionFactory sessionFactory = null;
 
-    public static SessionFactory getConnection() {
+    public static Connection getConnection() {
 
         try {
             Configuration configuration = new Configuration()
@@ -30,12 +32,7 @@ public class Util {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        return sessionFactory;
+        return (Connection) sessionFactory;
     }
-
-    public static void closeConnection() {
-        if (sessionFactory != null)
-            sessionFactory.close();
-    }
-
 }
+
