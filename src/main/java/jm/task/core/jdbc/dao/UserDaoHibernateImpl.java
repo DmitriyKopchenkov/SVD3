@@ -83,22 +83,18 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        Session session = sessionFactory.openSession();
         Transaction transaction = null;
-        try {
+        try (final Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
             transaction.commit();
-            System.out.println("User deleted");
         } catch (Exception e) {
-            e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
+            e.printStackTrace();
         }
+        System.out.println("User с id " + id + " removed from the table");
     }
 
     @Override
@@ -124,26 +120,17 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        Session session = sessionFactory.openSession();
         Transaction transaction = null;
-        try {
+        try (final Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            final List<User> instances = session.createCriteria(User.class).list();
-
-            for (Object o : instances) {
-                session.delete(o);
-            }
-
-            session.getTransaction().commit();
-            System.out.println("The table is cleared");
+            String sql = "TRUNCATE TABLE users;";
+            session.createSQLQuery(sql).executeUpdate();
+            transaction.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
+        System.out.println("The user table is cleared");
     }
 }
