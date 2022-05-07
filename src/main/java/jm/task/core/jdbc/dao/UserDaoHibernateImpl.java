@@ -2,6 +2,7 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -83,18 +84,13 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        Transaction transaction = null;
-        try (final Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.delete(session.get(User.class, id));
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.beginTransaction();
+            //noinspection JpaQlInspection
+            session.createQuery("delete User where id = :id")
+                    .setParameter("id", id).executeUpdate();
+            session.getTransaction().commit();
         }
-        System.out.println("User с id " + id + " removed from the table");
     }
 
     @Override
